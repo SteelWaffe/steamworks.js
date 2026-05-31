@@ -55,4 +55,4 @@ child_process.spawn('napi', params, { stdio: 'inherit', shell: true })
         if (err) {
             throw err;
         }
-    })
+    });
