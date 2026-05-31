@@ -113,6 +113,24 @@ export declare namespace input {
     getHandle(): bigint
   }
 }
+export declare namespace leaderboard {
+  export interface UploadResult {
+    changed: boolean
+    score: number
+    globalRankNew: number
+    globalRankPrevious: number
+  }
+  export interface Entry {
+    /** 64-bit Steam ID rendered as a decimal string (avoids BigInt over IPC). */
+    steamId64: string
+    globalRank: number
+    score: number
+  }
+  export function findOrCreateLeaderboard(name: string, descending: boolean, numeric: boolean): Promise<boolean>
+  export function uploadLeaderboardScore(name: string, score: number, force: boolean): Promise<UploadResult | null>
+  export function downloadLeaderboardEntries(name: string, request: string, start: number, end: number): Promise<Array<Entry>>
+  export function getLeaderboardEntryCount(name: string): Promise<number>
+}
 export declare namespace localplayer {
   export function getSteamId(): PlayerSteamId
   export function getName(): string
@@ -336,6 +354,7 @@ export declare namespace workshop {
    * @returns an array of subscribed workshop item ids
    */
   export function getSubscribedItems(): Array<bigint>
+  export function deleteItem(itemId: bigint): Promise<void>
   export const enum UGCQueryType {
     RankedByVote = 0,
     RankedByPublicationDate = 1,
