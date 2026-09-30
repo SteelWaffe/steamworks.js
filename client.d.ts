@@ -56,7 +56,8 @@ export declare namespace callback {
     P2PSessionRequest = 6,
     P2PSessionConnectFail = 7,
     GameLobbyJoinRequested = 8,
-    MicroTxnAuthorizationResponse = 9
+    MicroTxnAuthorizationResponse = 9,
+    GameRichPresenceJoinRequested = 10
   }
   export function register<C extends keyof import('./callbacks').CallbackReturns>(steamCallback: C, handler: (value: import('./callbacks').CallbackReturns[C]) => void): Handle
   export class Handle {
@@ -76,6 +77,38 @@ export declare namespace cloud {
     name: string
     size: bigint
   }
+}
+export declare namespace friends {
+  export interface FriendInfo {
+    /** 64-bit Steam ID as a decimal string. */
+    steamId64: string
+    name: string
+    nickName?: string
+    /** `offline`, `online`, `busy`, `away`, `snooze`, `trade` or `play`. */
+    state: string
+    /** App the friend is playing right now, if any. */
+    appId?: number
+  }
+  export interface Avatar {
+    width: number
+    height: number
+    /** Raw RGBA pixels. */
+    rgba: Buffer
+  }
+  /** The player's regular Steam friends (not blocked, pending or clan members). */
+  export function getFriends(): Array<FriendInfo>
+  /** Medium (64x64) avatar of any user Steam knows about, or null while it is not downloaded yet. */
+  export function getAvatar(steamId64: string): Avatar | null
+  /**
+   * Asks Steam to download a user's name and avatar; a PersonaStateChange follows.
+   * False when the data is already cached.
+   */
+  export function requestUserInformation(steamId64: string, nameOnly: boolean): boolean
+  /**
+   * Sends a Steam game invite. The friend's game starts with `connect` on its
+   * command line, or receives GameRichPresenceJoinRequested if already running.
+   */
+  export function inviteUserToGame(steamId64: string, connect: string): void
 }
 export declare namespace input {
   export const enum InputType {

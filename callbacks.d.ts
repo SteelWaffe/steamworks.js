@@ -53,4 +53,9 @@ export interface CallbackReturns {
         order_id: number | bigint
         authorized: boolean
     }
+    [client.callback.SteamCallback.GameRichPresenceJoinRequested]: {
+        /** 64-bit Steam ID as a decimal string. */
+        friend_steam_id: string
+        connect: string
+    }
 }

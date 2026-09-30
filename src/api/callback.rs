@@ -34,6 +34,7 @@ pub mod callback {
         P2PSessionConnectFail,
         GameLobbyJoinRequested,
         MicroTxnAuthorizationResponse,
+        GameRichPresenceJoinRequested,
     }
 
     #[napi(ts_generic_types = "C extends keyof import('./callbacks').CallbackReturns")]
@@ -77,6 +78,9 @@ pub mod callback {
             SteamCallback::MicroTxnAuthorizationResponse => {
                 register_callback::<steamworks::MicroTxnAuthorizationResponse>(threadsafe_handler)
             }
+            SteamCallback::GameRichPresenceJoinRequested => register_callback::<
+                crate::api::friends::GameRichPresenceJoinRequested,
+            >(threadsafe_handler),
         };
 
         Handle {
