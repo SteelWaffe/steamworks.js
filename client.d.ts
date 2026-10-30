@@ -16,6 +16,21 @@ export declare namespace apps {
   export function isSubscribedApp(appId: number): boolean
   export function isAppInstalled(appId: number): boolean
   export function isDlcInstalled(appId: number): boolean
+  /**
+   * Asks Steam to download and install a DLC the user owns but has switched
+   * off or not downloaded yet (`ISteamApps::InstallDLC`). Steam does the work
+   * in the background; `is_dlc_installed` turns true once it is on disk.
+   */
+  export function installDlc(appId: number): void
+  export interface DlcDownloadProgress {
+    bytesDownloaded: number
+    bytesTotal: number
+  }
+  /**
+   * How far a DLC download has come, or null when Steam is not downloading it
+   * (`ISteamApps::GetDlcDownloadProgress`).
+   */
+  export function getDlcDownloadProgress(appId: number): DlcDownloadProgress | null
   export function isSubscribedFromFreeWeekend(): boolean
   export function isVacBanned(): boolean
   export function isCybercafe(): boolean
